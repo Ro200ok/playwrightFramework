@@ -1,34 +1,27 @@
 const {MainPage} = require('../framework');
-
 const { chromium } = require('playwright');
-
+const { after } = require('mocha');
 const url = 'https://jsonplaceholder.typicode.com/'
 
-
-
-
-// afterEach( async()=> {
-    
-//     await browser.close();
-// })
-
-
 describe('Noop spec', function(){
-    it('noop it', async function(){
-      
-    const browser = await chromium.launch();
+    let browser = null;
+    let page = null;
     
-    const page = await browser.newPage();
+    beforeEach(async () => {
+    browser = await chromium.launch({headless: false});
+    page = await browser.newPage();
     await page.goto(url);
+    })
+    
+    afterEach(async () => {
+        await browser.close();
+    })
+
+    it('noop it', async function(){
+    
     
     const mainPage = new MainPage(page);
-    // await MainPage.click('/html/body/header/nav/ul/li[1]/a')
-    
-    
     await page.screenshot({ path: `example.png` });
-    
-    await browser.close();
-
 
     })
 })
